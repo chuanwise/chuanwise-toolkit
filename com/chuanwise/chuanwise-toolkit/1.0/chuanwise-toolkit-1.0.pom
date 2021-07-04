@@ -6,7 +6,12 @@
 
     <groupId>com.chuanwise</groupId>
     <artifactId>chuanwise-toolkit</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
+    <modules>
+        <module>chuanwise-toolkit-api</module>
+        <module>chuanwise-toolkit-implement</module>
+    </modules>
 
     <properties>
         <github.global.server>github</github.global.server>
