@@ -1,7 +1,10 @@
-package com.chuanwise.toolkit.serializer;
+package com.chuanwise.toolkit.serialize.serializer;
+
+import com.chuanwise.toolkit.serialize.serializer.object.DeserializedObject;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /**
  * 序列化工具类
@@ -72,6 +75,8 @@ public interface Serializer {
      */
     <T> T deserialize(String string, Class<T> clazz);
 
+    DeserializedObject deserialize(String string);
+
     /**
      * 从输入流中读取内容，并反序列化为指定的类型的对象
      * @param inputStream 数据来源
@@ -79,8 +84,9 @@ public interface Serializer {
      * @param <T> 反序列化目标类型
      * @return 反序列化结果
      */
-    default <T> T deserialize(InputStream inputStream, Class<T> clazz) {
-        return null;
+    default <T> T deserialize(InputStream inputStream, Class<T> clazz) throws IOException {
+        byte[] bytes = new byte[inputStream.available()];
+        return deserialize(new String(bytes), clazz);
     }
 
     /**
@@ -138,4 +144,21 @@ public interface Serializer {
     default <T> T deserialize(byte[] bytes, Class<T> clazz) {
         return deserialize(new String(bytes), clazz);
     }
+
+    default <F, T> T convert(F from, Class<T> clazz) {
+        if (Objects.isNull(from)) {
+            return null;
+        }
+        if (clazz.isAssignableFrom(from.getClass())) {
+            return ((T) from);
+        } else if(String.class.isAssignableFrom(clazz)) {
+            return ((T) serialize(from));
+        } else {
+            return deserialize(serialize(from), clazz);
+        }
+    }
+
+    void setClassLoader(ClassLoader classLoader);
+
+    ClassLoader getClassLoader();
 }

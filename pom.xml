@@ -6,7 +6,12 @@
 
     <groupId>com.chuanwise</groupId>
     <artifactId>chuanwise-toolkit</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
+    <modules>
+        <module>chuanwise-toolkit-api</module>
+        <module>chuanwise-toolkit-implement</module>
+    </modules>
 
     <properties>
         <github.global.server>github</github.global.server>
@@ -31,7 +36,7 @@
                     <message>Maven artifacts for ${project.version}</message>
                     <noJekyll>true</noJekyll>
                     <outputDirectory>${project.build.directory}/chuanwise-toolkit</outputDirectory><!--本地jar地址-->
-                    <branch>refs/origin/main</branch><!--分支的名称-->
+                    <branch>refs/origin/master</branch><!--分支的名称-->
                     <merge>true</merge>
                     <includes>
                         <include>**/*</include>
