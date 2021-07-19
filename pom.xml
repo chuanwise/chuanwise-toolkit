@@ -4,18 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.chuanwise</groupId>
+    <groupId>cn.chuanwise</groupId>
     <artifactId>chuanwise-toolkit</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
         <module>chuanwise-toolkit-api</module>
         <module>chuanwise-toolkit-implement</module>
+        <module>chuanwise-toolkit-minecraft</module>
+        <module>chuanwise-toolkit-minecraft-graphic</module>
     </modules>
 
     <properties>
         <github.global.server>github</github.global.server>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.14</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

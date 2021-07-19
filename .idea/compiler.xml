@@ -8,8 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="chuanwise-toolkit-api" />
+        <module name="chuanwise-toolkit-minecraft" />
         <module name="chuanwise-toolkit-implement" />
+        <module name="chuanwise-toolkit-minecraft-graphic" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="chuanwise-toolkit-minecraft-graphic-implement" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

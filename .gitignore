@@ -26,3 +26,6 @@ hs_err_pid*
 
 /src/test/
 /chuanwise-toolkit-implement/src/test/
+/chuanwise-toolkit-api/src/main/resources/
+/chuanwise-toolkit-minecraft/src/test/
+/chuanwise-toolkit-minecraft-graphic/src/test/
