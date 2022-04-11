@@ -25,7 +25,7 @@ public class ByteStreams
      * @throws IOException 读取时出现异常
      */
     public static byte[] read(InputStream inputStream) throws IOException {
-        Preconditions.namedArgumentNonNull(inputStream, "input stream");
+        Preconditions.objectNonNull(inputStream, "input stream");
         
         final byte[] bytes = new byte[inputStream.available()];
         inputStream.read(bytes);
@@ -40,8 +40,8 @@ public class ByteStreams
      * @throws IOException 转移时出现异常
      */
     public static void dump(InputStream inputStream, OutputStream outputStream) throws IOException {
-        Preconditions.namedArgumentNonNull(inputStream, "input stream");
-        Preconditions.namedArgumentNonNull(outputStream, "out stream");
+        Preconditions.objectNonNull(inputStream, "input stream");
+        Preconditions.objectNonNull(outputStream, "out stream");
         
         final byte[] bytes = new byte[DEFAULT_PACK_SIZE];
         int len;

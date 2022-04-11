@@ -24,3 +24,8 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+def publishFile = new File("publish.gradle")
+if (publishFile.isFile()) {
+    apply from: publishFile.getAbsolutePath()
+}

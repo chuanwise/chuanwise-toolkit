@@ -19,8 +19,8 @@ public class LongestCommonSubstring
      * @return 最长公共子串
      */
     public static String calculate(String str1, String str2) {
-        Preconditions.argumentNonNull(str1);
-        Preconditions.argumentNonNull(str2);
+        Preconditions.nonNull(str1);
+        Preconditions.nonNull(str2);
         
         char[] arrayA = str1.toCharArray();
         char[] arrayB = str2.toCharArray();

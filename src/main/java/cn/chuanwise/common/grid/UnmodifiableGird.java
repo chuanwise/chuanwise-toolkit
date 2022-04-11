@@ -18,7 +18,7 @@ public class UnmodifiableGird<T>
     protected final Grid<T> grid;
     
     public UnmodifiableGird(Grid<T> grid) {
-        Preconditions.namedArgumentNonNull(grid, "grid");
+        Preconditions.objectNonNull(grid, "grid");
         
         this.grid = grid;
     }

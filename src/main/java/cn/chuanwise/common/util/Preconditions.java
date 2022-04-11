@@ -51,7 +51,7 @@ public class Preconditions
      * @throws NullPointerException object 或 objectName 为 null
      */
     @SuppressWarnings("all")
-    public static void namedNonNull(Object object, String objectName) {
+    public static void objectNonNull(Object object, String objectName) {
         if (Objects.isNull(objectName)) {
             throw new NullPointerException("object name is null");
         }
@@ -80,63 +80,11 @@ public class Preconditions
      * @throws NullPointerException     message 为 null
      */
     public static void argument(boolean legal, String message) {
-        namedNonNull(message, "message");
+        objectNonNull(message, "message");
         
         if (!legal) {
             throw new IllegalArgumentException(message);
         }
-    }
-    
-    /**
-     * 断言方法参数
-     *
-     * @param legal 方法参数是否合法
-     * @param name  方法参数名
-     * @throws IllegalArgumentException legal 为 false
-     * @throws NullPointerException     message 为 null
-     */
-    public static void namedArgument(boolean legal, String name) {
-        namedNonNull(name, "name");
-        argument(legal, name + " is illegal");
-    }
-    
-    /**
-     * 断言方法参数
-     *
-     * @param legal   方法参数是否合法
-     * @param name    方法参数名
-     * @param message 参数错误信息
-     * @throws IllegalArgumentException legal 为 false
-     * @throws NullPointerException     message 为 null
-     */
-    public static void namedArgument(boolean legal, String name, String message) {
-        namedNonNull(name, "name");
-        namedNonNull(message, "message");
-        argument(legal, name + " is illegal: " + message);
-    }
-    
-    /**
-     * 非空参数断言
-     *
-     * @param argument 参数
-     * @throws IllegalArgumentException argument 为 null
-     */
-    public static void argumentNonNull(Object argument) {
-        argument(Objects.nonNull(argument));
-    }
-    
-    /**
-     * 非空参数断言
-     *
-     * @param argument 参数
-     * @param message  异常信息
-     * @throws IllegalArgumentException argument 为 null
-     * @throws NullPointerException     message 为 null
-     */
-    public static void argumentNonNull(Object argument, String message) {
-        namedNonNull(message, "message");
-        
-        argument(Objects.nonNull(argument), message);
     }
     
     /**
@@ -210,24 +158,11 @@ public class Preconditions
      *
      * @param argument 参数
      * @param name     参数名
-     * @throws IllegalArgumentException argument 为 null
-     * @throws NullPointerException     name 为 null
-     */
-    public static void namedArgumentNonNull(Object argument, String name) {
-        namedNonNull(name, "name");
-        argument(Objects.nonNull(argument), name + " is null");
-    }
-    
-    /**
-     * 非空参数断言
-     *
-     * @param argument 参数
-     * @param name     参数名
      * @throws IllegalArgumentException argument 为空
      * @throws NullPointerException     name 为 null
      */
-    public static void namedArgumentNonEmpty(String argument, String name) {
-        namedNonNull(name, "name");
+    public static void objectArgumentNonEmpty(String argument, String name) {
+        objectNonNull(name, "name");
         argumentNonEmpty(argument, name + " is null");
     }
     
@@ -239,8 +174,8 @@ public class Preconditions
      * @throws IllegalArgumentException argument 为空
      * @throws NullPointerException     name 为 null
      */
-    public static void namedArgumentNonEmpty(Collection<?> argument, String name) {
-        namedNonNull(name, "name");
+    public static void objectArgumentNonEmpty(Collection<?> argument, String name) {
+        objectNonNull(name, "name");
         argumentNonEmpty(argument, name + " is null");
     }
     
@@ -252,8 +187,8 @@ public class Preconditions
      * @throws IllegalArgumentException argument 为空
      * @throws NullPointerException     name 为 null
      */
-    public static void namedArgumentNonEmpty(Emptiable argument, String name) {
-        namedNonNull(name, "name");
+    public static void objectArgumentNonEmpty(Emptiable argument, String name) {
+        objectNonNull(name, "name");
         argumentNonEmpty(argument, name + " is null");
     }
     
@@ -277,7 +212,7 @@ public class Preconditions
      * @throws IndexOutOfBoundsException legal 为 false
      */
     public static void index(boolean legal, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         
         if (!legal) {
             throw new IndexOutOfBoundsException(message);
@@ -307,7 +242,7 @@ public class Preconditions
      * @throws IllegalArgumentException  bound < 0
      */
     public static void index(int index, int bound, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         index(index >= 0 && index < bound, message + " index out of bound, position: " + index + " should be restricted in [0, " + bound + ")");
     }
     
@@ -319,8 +254,8 @@ public class Preconditions
      * @throws IndexOutOfBoundsException legal 为 false
      * @throws IllegalArgumentException  name 为 null
      */
-    public static void namedIndex(boolean legal, String name) {
-        namedArgumentNonNull(name, "name");
+    public static void objectIndex(boolean legal, String name) {
+        objectNonNull(name, "name");
         index(legal, name + " index out of bound!");
     }
     
@@ -333,8 +268,8 @@ public class Preconditions
      * @throws IndexOutOfBoundsException index >= 0 且 index < bound
      * @throws IllegalArgumentException  name 为 null
      */
-    public static void namedIndex(int index, int bound, String name) {
-        namedArgumentNonNull(name, "name");
+    public static void objectIndex(int index, int bound, String name) {
+        objectNonNull(name, "name");
         index(index, bound, name + " index out of bound!");
     }
     
@@ -358,7 +293,7 @@ public class Preconditions
      * @throws IndexOutOfBoundsException legal 为 false
      */
     public static void position(boolean legal, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         
         if (!legal) {
             throw new IndexOutOfBoundsException(message);
@@ -388,7 +323,7 @@ public class Preconditions
      * @throws IllegalArgumentException  bound < 0
      */
     public static void position(int position, int bound, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         position(position >= 0 && position <= bound, message + " position out of bound, position: " + position + " should be restricted in [0, " + bound + "]");
     }
     
@@ -400,8 +335,8 @@ public class Preconditions
      * @throws IndexOutOfBoundsException legal 为 false
      * @throws IllegalArgumentException  name 为 null
      */
-    public static void namedPosition(boolean legal, String name) {
-        namedArgumentNonNull(name, "name");
+    public static void objectPosition(boolean legal, String name) {
+        objectNonNull(name, "name");
         position(legal, name + " position out of bound!");
     }
     
@@ -414,8 +349,8 @@ public class Preconditions
      * @throws IndexOutOfBoundsException position >= 0 且 position < bound
      * @throws IllegalArgumentException  name 为 null
      */
-    public static void namedPosition(int position, int bound, String name) {
-        namedArgumentNonNull(name, "name");
+    public static void objectPosition(int position, int bound, String name) {
+        objectNonNull(name, "name");
         position(position, bound, name + " position out of bound!");
     }
     
@@ -440,11 +375,59 @@ public class Preconditions
      * @throws IllegalArgumentException      message 为 null
      */
     public static void operation(boolean legal, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         
         if (!legal) {
             throw new UnsupportedOperationException(message);
         }
+    }
+    
+    /**
+     * 操作为空断言
+     *
+     * @param reference 对象
+     * @throws UnsupportedOperationException reference 非 null
+     */
+    public static void operationIsNull(Object reference) {
+        operation(Objects.isNull(reference));
+    }
+    
+    /**
+     * 操作为空断言
+     *
+     * @param reference   对象
+     * @param message 异常信息
+     * @throws UnsupportedOperationException reference 非 null
+     * @throws IllegalArgumentException      message 为 null
+     */
+    public static void operationIsNull(Object reference, String message) {
+        objectNonNull(message, "message");
+        
+        operation(Objects.isNull(reference), message);
+    }
+    
+    /**
+     * 操作非空断言
+     *
+     * @param reference 对象
+     * @throws UnsupportedOperationException reference 为 null
+     */
+    public static void operationNonNull(Object reference) {
+        operation(Objects.nonNull(reference));
+    }
+    
+    /**
+     * 操作非空断言
+     *
+     * @param reference   对象
+     * @param message 异常信息
+     * @throws UnsupportedOperationException reference 为 null
+     * @throws IllegalArgumentException      message 为 null
+     */
+    public static void operationNonNull(Object reference, String message) {
+        objectNonNull(message, "message");
+        
+        operation(Objects.nonNull(reference), message);
     }
     
     /**
@@ -468,7 +451,7 @@ public class Preconditions
      * @throws IllegalArgumentException message 为 null
      */
     public static void element(boolean legal, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         
         if (!legal) {
             throw new NoSuchElementException(message);
@@ -494,7 +477,7 @@ public class Preconditions
      * @throws IllegalArgumentException message 为 null
      */
     public static void elementIsNull(Object reference, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         
         element(Objects.isNull(reference), message);
     }
@@ -518,7 +501,7 @@ public class Preconditions
      * @throws IllegalArgumentException message 为 null
      */
     public static void elementNonNull(Object reference, String message) {
-        namedArgumentNonNull(message, "message");
+        objectNonNull(message, "message");
         
         element(Objects.nonNull(reference), message);
     }

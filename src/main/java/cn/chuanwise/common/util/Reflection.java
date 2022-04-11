@@ -14,7 +14,7 @@ public class Reflection<T> {
     protected final T value;
     
     public Reflection(T value) {
-        Preconditions.namedArgumentNonNull(value, "value");
+        Preconditions.objectNonNull(value, "value");
         
         this.value = value;
     }
@@ -26,7 +26,7 @@ public class Reflection<T> {
      * @return 当找不到该属性时返回 null，否则返回属性值
      */
     public Object getAccessibleField(String fieldName) {
-        Preconditions.namedArgumentNonEmpty(fieldName, "field name");
+        Preconditions.objectArgumentNonEmpty(fieldName, "field name");
     
         return Reflections.getAccessibleFieldValue(value, fieldName);
     }
@@ -38,7 +38,7 @@ public class Reflection<T> {
      * @return 当找不到该属性时返回 false
      */
     public boolean setAccessibleField(String fieldName, Object value) {
-        Preconditions.namedArgumentNonEmpty(fieldName, "field name");
+        Preconditions.objectArgumentNonEmpty(fieldName, "field name");
     
         return Reflections.setAccessibleFieldValue(this.value, fieldName, value);
     }
@@ -50,7 +50,7 @@ public class Reflection<T> {
      * @return 当找不到该属性时返回 null，否则返回属性值
      */
     public Object getExistField(String fieldName) {
-        Preconditions.namedArgumentNonEmpty(fieldName, "field name");
+        Preconditions.objectArgumentNonEmpty(fieldName, "field name");
     
         return Reflections.getExistFieldValue(value, fieldName);
     }
@@ -62,7 +62,7 @@ public class Reflection<T> {
      * @return 当找不到该属性时返回 false
      */
     public boolean setExistField(String fieldName, Object value) {
-        Preconditions.namedArgumentNonEmpty(fieldName, "field name");
+        Preconditions.objectArgumentNonEmpty(fieldName, "field name");
     
         return Reflections.setExistFieldValue(this.value, fieldName, value);
     }
@@ -74,7 +74,7 @@ public class Reflection<T> {
      * @return 当找不到该属性时返回 null，否则返回属性值
      */
     public Object getDeclaredField(String fieldName) {
-        Preconditions.namedArgumentNonEmpty(fieldName, "field name");
+        Preconditions.objectArgumentNonEmpty(fieldName, "field name");
     
         return Reflections.getDeclaredFieldValue(value, fieldName);
     }
@@ -86,7 +86,7 @@ public class Reflection<T> {
      * @return 当找不到该属性时返回 false
      */
     public boolean setDeclaredField(String fieldName, Object value) {
-        Preconditions.namedArgumentNonEmpty(fieldName, "field name");
+        Preconditions.objectArgumentNonEmpty(fieldName, "field name");
     
         return Reflections.setDeclaredFieldValue(this.value, fieldName, value);
     }

@@ -46,7 +46,7 @@ public final class Container<T> {
      */
     @SuppressWarnings("all")
     public static <U> Container<U> ofOptional(Optional<U> optional) {
-        Preconditions.namedArgumentNonNull(optional, "optional");
+        Preconditions.objectNonNull(optional, "optional");
     
         return optional.map(Container::of).orElse(empty());
     }
@@ -121,7 +121,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException value 为 null 时
      */
     private Container(T value) {
-        Preconditions.namedArgumentNonNull(value, "若要构造装有 null 值的容器，请使用 Container.ofNull()");
+        Preconditions.objectNonNull(value, "若要构造装有 null 值的容器，请使用 Container.ofNull()");
     
         this.value = value;
     }
@@ -187,7 +187,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException action 为 null 时
      */
     public Container<T> ifPresent(Consumer<T> action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
     
         if (isPresent()) {
             action.accept(get());
@@ -203,7 +203,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException action 为 null 时
      */
     public Container<T> ifPresent(Runnable action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
     
         if (isPresent()) {
             action.run();
@@ -219,7 +219,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException action 为 null 时
      */
     public Container<T> ifSet(Consumer<T> action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
     
         if (isSet()) {
             action.accept(value);
@@ -235,7 +235,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException action 为 null 时
      */
     public Container<T> ifSet(Runnable action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
     
         if (isSet()) {
             action.run();
@@ -251,7 +251,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException action 为 null 时
      */
     public Container<T> ifEmpty(Runnable action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
     
         if (isEmpty()) {
             action.run();
@@ -270,8 +270,8 @@ public final class Container<T> {
      */
     @Deprecated
     public Container<T> ifPresentOrEmpty(Consumer<T> action1, Runnable action2) {
-        Preconditions.namedArgumentNonNull(action1, "action when the container is present");
-        Preconditions.namedArgumentNonNull(action2, "action when the container isn't present");
+        Preconditions.objectNonNull(action1, "action when the container is present");
+        Preconditions.objectNonNull(action2, "action when the container isn't present");
     
         if (isPresent()) {
             action1.accept(get());
@@ -290,7 +290,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException mapper 为 null 时
      */
     public <U> Container<U> map(Function<T, U> mapper) {
-        Preconditions.namedArgumentNonNull(mapper, "mapper");
+        Preconditions.objectNonNull(mapper, "mapper");
     
         if (isSet()) {
             return of(mapper.apply(get()));
@@ -307,7 +307,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException filter 为 null 时
      */
     public Container<T> filter(Predicate<T> filter) {
-        Preconditions.namedArgumentNonNull(filter, "filter");
+        Preconditions.objectNonNull(filter, "filter");
     
         if (isSet() && filter.test(value)) {
             return this;
@@ -340,7 +340,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException container 为 null 时
      */
     public Container<T> or(Container<T> container) {
-        Preconditions.namedArgumentNonNull(container, "container");
+        Preconditions.objectNonNull(container, "container");
     
         if (isEmpty()) {
             return container;
@@ -376,7 +376,7 @@ public final class Container<T> {
      * @throws IllegalArgumentException supplier 为 null 时
      */
     public T orElseGet(Supplier<T> supplier) {
-        Preconditions.namedArgumentNonNull(supplier, "supplier");
+        Preconditions.objectNonNull(supplier, "supplier");
     
         if (isSet()) {
             return get();
@@ -405,7 +405,7 @@ public final class Container<T> {
      * @see #orElseThrow(Supplier) 与当前方法类似
      */
     public T orElseThrow(String message) {
-        Preconditions.namedArgumentNonNull(message, "message");
+        Preconditions.objectNonNull(message, "message");
     
         return orElseThrow(() -> new NoSuchElementException(message));
     }
@@ -419,7 +419,7 @@ public final class Container<T> {
      * @throws E 容器为空时
      */
     public <E extends Throwable> T orElseThrow(Supplier<E> supplier) throws E {
-        Preconditions.namedArgumentNonNull(supplier, "supplier");
+        Preconditions.objectNonNull(supplier, "supplier");
     
         if (isSet()) {
             return value;

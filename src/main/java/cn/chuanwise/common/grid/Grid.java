@@ -160,7 +160,7 @@ public interface Grid<T> {
      * @param action 操作
      */
     default void forRow(int row, Consumer<T> action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
     
         rowIterator(row).forEachRemaining(action);
     }
@@ -172,7 +172,7 @@ public interface Grid<T> {
      * @param action 操作
      */
     default void forColumn(int column, Consumer<T> action) {
-        Preconditions.namedArgumentNonNull(action, "action");
+        Preconditions.objectNonNull(action, "action");
         
         columnIterator(column).forEachRemaining(action);
     }

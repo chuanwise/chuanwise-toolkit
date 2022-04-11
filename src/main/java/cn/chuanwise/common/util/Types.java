@@ -66,7 +66,7 @@ public class Types
 
         @Override
         public int hashCode() {
-            return Objects.hash(currentType);
+            return java.util.Objects.hash(currentType);
         }
 
         @Override
@@ -140,9 +140,9 @@ public class Types
      * @throws IllegalStateException     计算出现错误时，或缺少必要信息时
      */
     public static Type getTypeParameterType(Type sonType, Class<?> genericClass, String parameterName) {
-        Preconditions.namedArgumentNonNull(sonType, "son class");
-        Preconditions.namedArgumentNonNull(genericClass, "generic class");
-        Preconditions.namedArgumentNonEmpty(parameterName, "parameter name");
+        Preconditions.objectNonNull(sonType, "son class");
+        Preconditions.objectNonNull(genericClass, "generic class");
+        Preconditions.objectArgumentNonEmpty(parameterName, "parameter name");
 
         // 寻找泛型参数
         final TypeVariable<? extends Class<?>>[] typeParameters = genericClass.getTypeParameters();
@@ -156,7 +156,7 @@ public class Types
                 break;
             }
         }
-        Preconditions.argument(parameterIndex != -1, "there is no such type parameter named \"" + parameterName + "\" in class: " + genericClass.getName());
+        Preconditions.argument(parameterIndex != -1, "there is no such type parameter object \"" + parameterName + "\" in class: " + genericClass.getName());
 
         return getTypeParameterType(sonType, genericClass, parameterIndex);
     }
@@ -174,8 +174,8 @@ public class Types
      * @throws IllegalStateException     计算出现错误时，或缺少必要信息时
      */
     public static Type getTypeParameterType(Type sonType, Class<?> genericClass, int parameterIndex) {
-        Preconditions.namedArgumentNonNull(sonType, "son type");
-        Preconditions.namedArgumentNonNull(genericClass, "generic class");
+        Preconditions.objectNonNull(sonType, "son type");
+        Preconditions.objectNonNull(genericClass, "generic class");
 
         Preconditions.argument(!Objects.equals(sonType, genericClass), "can not find the type parameter type of a generic class itself.");
 
@@ -263,7 +263,7 @@ public class Types
      * @throws IllegalArgumentException type 为 null，或 type 并不是某种 class 时
      */
     public static Class<?> getTypeClass(Type type) {
-        Preconditions.namedArgumentNonNull(type, "type");
+        Preconditions.objectNonNull(type, "type");
 
         if (type instanceof Class) {
             return ((Class<?>) type);

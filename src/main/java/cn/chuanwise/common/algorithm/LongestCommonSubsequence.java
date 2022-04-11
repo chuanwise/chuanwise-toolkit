@@ -19,8 +19,8 @@ public class LongestCommonSubsequence
      * @return 最长公共子序列长度
      */
     public static int length(String str1, String str2) {
-        Preconditions.argumentNonNull(str1);
-        Preconditions.argumentNonNull(str2);
+        Preconditions.nonNull(str1);
+        Preconditions.nonNull(str2);
         
         final int n = str1.length();
         final int m = str2.length();

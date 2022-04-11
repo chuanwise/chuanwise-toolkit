@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  * @author Chuanwise
  */
 public class Maps
-        extends StaticUtilities {
+    extends StaticUtilities {
     
     /**
      * 从映射表中获取某元素，或将其添加后获取
@@ -22,7 +22,7 @@ public class Maps
      * @return 值
      */
     public static <K, V> V getOrPut(Map<K, V> map, K key, V value) {
-        Preconditions.namedArgumentNonNull(map, "map");
+        Preconditions.objectNonNull(map, "map");
     
         if (map.containsKey(key)) {
             return map.get(key);
@@ -43,8 +43,8 @@ public class Maps
      * @return 值
      */
     public static <K, V> V getOrPutGet(Map<K, V> map, K key, Supplier<V> supplier) {
-        Preconditions.namedArgumentNonNull(map, "map");
-        Preconditions.namedArgumentNonNull(supplier, "supplier");
+        Preconditions.objectNonNull(map, "map");
+        Preconditions.objectNonNull(supplier, "supplier");
         
         if (map.containsKey(key)) {
             return map.get(key);

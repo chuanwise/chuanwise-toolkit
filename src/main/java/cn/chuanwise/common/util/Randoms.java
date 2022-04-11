@@ -37,7 +37,7 @@ public class Randoms
      * @param random 随机数生成器
      */
     public static void flush(Random random) {
-        Preconditions.argumentNonNull(random, "random");
+        Preconditions.nonNull(random, "random");
         
         Randoms.RANDOM = random;
     }

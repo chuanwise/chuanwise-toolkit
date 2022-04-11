@@ -19,7 +19,7 @@ public class Modifiers
      * @return 成员是否是静态成员
      */
     public static boolean isStatic(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isStatic(modifiers);
@@ -32,7 +32,7 @@ public class Modifiers
      * @return 方法是否是抽象成员
      */
     public static boolean isAbstract(Method method) {
-        Preconditions.namedArgumentNonNull(method, "method");
+        Preconditions.objectNonNull(method, "method");
         
         final int modifiers = method.getModifiers();
         return Modifier.isAbstract(modifiers);
@@ -45,7 +45,7 @@ public class Modifiers
      * @return 成员是否是最终成员
      */
     public static boolean isFinal(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isFinal(modifiers);
@@ -58,7 +58,7 @@ public class Modifiers
      * @return 成员是否是私有成员
      */
     public static boolean isPrivate(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isPrivate(modifiers);
@@ -71,7 +71,7 @@ public class Modifiers
      * @return 成员是否是保护成员
      */
     public static boolean isProtected(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isProtected(modifiers);
@@ -84,7 +84,7 @@ public class Modifiers
      * @return 成员是否是公共成员
      */
     public static boolean isPublic(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isPublic(modifiers);
@@ -97,7 +97,7 @@ public class Modifiers
      * @return 成员是否是 volatile 成员
      */
     public static boolean isVolatile(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isVolatile(modifiers);
@@ -110,7 +110,7 @@ public class Modifiers
      * @return 成员是否是 strict 成员
      */
     public static boolean isStrict(Member member) {
-        Preconditions.namedArgumentNonNull(member, "member");
+        Preconditions.objectNonNull(member, "member");
         
         final int modifiers = member.getModifiers();
         return Modifier.isStrict(modifiers);

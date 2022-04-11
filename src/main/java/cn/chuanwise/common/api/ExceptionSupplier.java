@@ -12,7 +12,7 @@ public interface ExceptionSupplier<T>
     extends Supplier<T> {
     
     /**
-     * 调用 {@link #exceptAccept()}
+     * 调用 {@link #exceptGet()}
      * 如果抛出异常，包装为 {@link RuntimeException} 再次抛出。
      *
      * @return 返回值
@@ -21,7 +21,7 @@ public interface ExceptionSupplier<T>
     @Override
     default T get() {
         try {
-            return exceptAccept();
+            return exceptGet();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -34,5 +34,5 @@ public interface ExceptionSupplier<T>
      * @throws Exception 执行时出现异常
      * @see Supplier#get()
      */
-    T exceptAccept() throws Exception;
+    T exceptGet() throws Exception;
 }
