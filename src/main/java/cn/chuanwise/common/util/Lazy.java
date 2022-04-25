@@ -37,7 +37,7 @@ public interface Lazy<T>
     boolean isInitialized();
     
     /**
-     * 构造一个线程安全的懒加载器值。
+     * 构造线程安全的懒加载器值。
      *
      * @param getter 初始化器
      * @param <U>    懒加载器值类型
@@ -50,7 +50,7 @@ public interface Lazy<T>
     }
     
     /**
-     * 构造一个普通的懒加载器值。
+     * 构造普通的懒加载器值。
      *
      * @param getter 初始化器
      * @param <U>    懒加载器值类型

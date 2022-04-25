@@ -22,7 +22,7 @@ public abstract class AbstractTask
      * 监听器
      */
     @SuppressWarnings("all")
-    protected final List<ActionListener<? extends Task>> listeners = new CopyOnWriteArrayList<>();
+    protected final List<ActionListener> doneListeners = new CopyOnWriteArrayList<>();
     
     @Override
     public Throwable getCause() {
@@ -30,66 +30,82 @@ public abstract class AbstractTask
     }
     
     @Override
-    public Task registerListener(ActionListener<? extends Task> listener) {
+    public Task registerDoneListener(ActionListener listener) {
         Preconditions.objectNonNull(listener, "listener");
     
-        listeners.add(listener);
+        doneListeners.add(listener);
+        
+        if (isDone()) {
+            listener.listen(this);
+        }
     
         return this;
     }
     
     @Override
-    public Task registerListeners(ActionListener<? extends Task>... listeners) {
+    public Task registerDoneListeners(ActionListener... listeners) {
         Preconditions.objectNonNull(listeners, "listeners");
     
-        for (ActionListener<? extends Task> listener : listeners) {
+        final boolean done = isDone();
+        
+        for (ActionListener listener : listeners) {
             Preconditions.objectNonNull(listener, "listener");
-            this.listeners.add(listener);
+            this.doneListeners.add(listener);
+    
+            if (done) {
+                listener.listen(this);
+            }
         }
         
         return this;
     }
     
     @Override
-    public Task registerListeners(Iterable<? extends ActionListener<? extends Task>> listeners) {
+    public Task registerDoneListeners(Iterable<? extends ActionListener> listeners) {
         Preconditions.objectNonNull(listeners, "listeners");
     
-        for (ActionListener<? extends Task> listener : listeners) {
+        final boolean done = isDone();
+    
+        for (ActionListener listener : listeners) {
             Preconditions.objectNonNull(listener, "listener");
-            this.listeners.add(listener);
+            this.doneListeners.add(listener);
+        
+            if (done) {
+                listener.listen(this);
+            }
         }
     
         return this;
     }
     
     @Override
-    public Task unregisterListener(ActionListener<? extends Task> listener) {
+    public Task unregisterDoneListener(ActionListener listener) {
         Preconditions.objectNonNull(listener, "listener");
     
-        listeners.remove(listener);
+        doneListeners.remove(listener);
         
         return this;
     }
     
     @Override
-    public Task unregisterListeners(ActionListener<? extends Task>... listeners) {
+    public Task unregisterDoneListeners(ActionListener... listeners) {
         Preconditions.objectNonNull(listeners, "listeners");
     
-        for (ActionListener<? extends Task> listener : listeners) {
+        for (ActionListener listener : listeners) {
             Preconditions.objectNonNull(listener, "listener");
-            this.listeners.remove(listener);
+            this.doneListeners.remove(listener);
         }
     
         return this;
     }
     
     @Override
-    public Task unregisterListeners(Iterable<? extends ActionListener<? extends Task>> listeners) {
+    public Task unregisterDoneListeners(Iterable<? extends ActionListener> listeners) {
         Preconditions.objectNonNull(listeners, "listeners");
     
-        for (ActionListener<? extends Task> listener : listeners) {
+        for (ActionListener listener : listeners) {
             Preconditions.objectNonNull(listener, "listener");
-            this.listeners.remove(listener);
+            this.doneListeners.remove(listener);
         }
     
         return this;

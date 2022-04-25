@@ -55,7 +55,8 @@ public class Strings
      * @param string 字符串
      * @param count 重复次数
      * @return 重复后的字符串
-     * @throws IllegalArgumentException string 为 null 或 count < 0
+     * @throws NullPointerException string 为 null
+     * @throws IllegalArgumentException count < 0
      */
     public static String repeat(String string, int count) {
         Preconditions.objectNonNull(string, "string");
@@ -68,6 +69,65 @@ public class Strings
         final StringBuilder stringBuilder = new StringBuilder(string.length() * count);
         for (int i = 0; i < count; i++) {
             stringBuilder.append(string);
+        }
+        return stringBuilder.toString();
+    }
+    
+    /**
+     * 计算字符串的宽度
+     *
+     * @param string 字符串
+     * @param halfWidth 半角字符宽度
+     * @param fullWidth 全角字符宽度
+     * @return 字符串的宽度
+     */
+    public static int width(String string, int halfWidth, int fullWidth) {
+        Preconditions.argument(halfWidth > 0, "the width of half width char must be bigger than 0!");
+        Preconditions.argument(fullWidth > 0, "the width of full width char must be bigger than 0!");
+        
+        int width = 0;
+        
+        final int length = string.length();
+        for (int i = 0; i < length; i++) {
+            final char ch = string.charAt(i);
+            if (Characters.isHalfWidth(ch)) {
+                width += halfWidth;
+            } else {
+                width += fullWidth;
+            }
+        }
+        
+        return width;
+    }
+    
+    /**
+     * 计算字符串的宽度。半角字符算 1 宽度，全角字符算 2 宽度
+     *
+     * @param string 字符串
+     * @return 字符串的宽度
+     */
+    public static int width(String string) {
+        return width(string, 1, 2);
+    }
+    
+    /**
+     * 将一个字符重复若干次
+     *
+     * @param ch 字符
+     * @param count 重复次数
+     * @return 重复后的字符串
+     * @throws IllegalArgumentException count < 0
+     */
+    public static String repeat(char ch, int count) {
+        Preconditions.argument(count >= 0, "count must be bigger than or equals to 0!");
+        
+        if (count == 0) {
+            return "";
+        }
+        
+        final StringBuilder stringBuilder = new StringBuilder(count);
+        for (int i = 0; i < count; i++) {
+            stringBuilder.append(ch);
         }
         return stringBuilder.toString();
     }
@@ -459,5 +519,114 @@ public class Strings
      */
     public static int lastIndexOfExcluded(CharSequence string, CharSequence charSequence) {
         return lastIndexOfExcluded(string, charSequence, 0, -1);
+    }
+    
+    /**
+     * 转义字符串中的 \t \n \r \f 等为 \t \n \r \f
+     *
+     * @param string 转义前的字符串
+     * @return 转义后的字符串
+     */
+    public static String escape(String string) {
+        Preconditions.objectNonNull(string, "string");
+    
+        if (string.isEmpty()) {
+            return "";
+        }
+        
+        final int length = string.length();
+        final StringBuilder stringBuilder = new StringBuilder(length);
+        
+        for (int i = 0; i < length; i++) {
+            final char ch = string.charAt(i);
+    
+            switch (ch) {
+                case '\b':
+                    stringBuilder.append("\\b");
+                    break;
+                case '\f':
+                    stringBuilder.append("\\f");
+                    break;
+                case '\n':
+                    stringBuilder.append("\\n");
+                    break;
+                case '\r':
+                    stringBuilder.append("\\r");
+                    break;
+                case '\t':
+                    stringBuilder.append("\\t");
+                    break;
+                case '\\':
+                    stringBuilder.append("\\\\");
+                    break;
+                case '\"':
+                    stringBuilder.append("\\\"");
+                    break;
+                case '\'':
+                    stringBuilder.append("\\\'");
+                    break;
+                default:
+                    stringBuilder.append(ch);
+            }
+        }
+        
+        return stringBuilder.toString();
+    }
+    
+    /**
+     * 反转义字符串中的 \t \n \r \f 等为 \t \n \r \f
+     *
+     * @param string 转义后的字符串
+     * @return 转义前的字符串
+     */
+    public static String unescape(String string) {
+        Preconditions.objectNonNull(string, "string");
+    
+        if (string.isEmpty()) {
+            return "";
+        }
+    
+        final int length = string.length();
+        final StringBuilder stringBuilder = new StringBuilder(length);
+    
+        boolean escaped = false;
+        for (int i = 0; i < length; i++) {
+            final char ch = string.charAt(i);
+        
+            if (escaped) {
+                switch (ch) {
+                    case 'b':
+                        stringBuilder.append("\b");
+                        break;
+                    case 'f':
+                        stringBuilder.append("\f");
+                        break;
+                    case 'n':
+                        stringBuilder.append("\n");
+                        break;
+                    case 'r':
+                        stringBuilder.append("\r");
+                        break;
+                    case 't':
+                        stringBuilder.append("\t");
+                        break;
+                    case '\\':
+                        stringBuilder.append("\\");
+                        break;
+                    default:
+                        stringBuilder.append(ch);
+                }
+                escaped = false;
+                continue;
+            }
+            if (ch == '\\') {
+                escaped = true;
+                continue;
+            }
+    
+            stringBuilder.append(ch);
+        }
+    
+        return stringBuilder.toString();
     }
 }

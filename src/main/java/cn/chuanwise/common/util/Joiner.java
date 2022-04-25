@@ -55,7 +55,7 @@ public class Joiner {
      * @param string 字符串
      * @return this
      */
-    public Joiner with(String string) {
+    public Joiner plus(String string) {
         Preconditions.argument(nullable || Strings.nonEmpty(string), "string");
     
         if (stringBuilder.length() != 0) {
@@ -73,7 +73,7 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public <T> Joiner with(T element, Function<T, String> serializer) {
+    public <T> Joiner plus(T element, Function<T, String> serializer) {
         Preconditions.argument(nullable || Objects.nonNull(element), "string");
         Preconditions.objectNonNull(serializer, "serializer");
     
@@ -88,16 +88,16 @@ public class Joiner {
     /**
      * 添加若干元素
      *
-     * @param strings 元素
+     * @param elements 元素
      * @param serializer 序列化器
      * @return this
      */
-    public <T> Joiner withAll(T[] strings, Function<T, String> serializer) {
-        Preconditions.objectNonNull(strings, "strings");
+    public <T> Joiner withAll(T[] elements, Function<T, String> serializer) {
+        Preconditions.objectNonNull(elements, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
-        for (T element : strings) {
-            with(element, serializer);
+        for (T element : elements) {
+            plus(element, serializer);
         }
         return this;
     }
@@ -109,12 +109,28 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(char[] strings, Function<Character, String> serializer) {
+    public Joiner plus(char[] strings, Function<Character, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (char element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
+        }
+        return this;
+    }
+    /**
+     * 添加若干元素
+     *
+     * @param strings 元素
+     * @param serializer 序列化器
+     * @return this
+     */
+    public Joiner plus(byte[] strings, Function<Byte, String> serializer) {
+        Preconditions.objectNonNull(strings, "strings");
+        Preconditions.objectNonNull(serializer, "serializer");
+
+        for (byte element : strings) {
+            plus(element, serializer);
         }
         return this;
     }
@@ -126,12 +142,12 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(boolean[] strings, Function<Boolean, String> serializer) {
+    public Joiner plus(boolean[] strings, Function<Boolean, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (boolean element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
         }
         return this;
     }
@@ -143,12 +159,12 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(short[] strings, Function<Short, String> serializer) {
+    public Joiner plus(short[] strings, Function<Short, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (short element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
         }
         return this;
     }
@@ -160,12 +176,12 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(int[] strings, Function<Integer, String> serializer) {
+    public Joiner plus(int[] strings, Function<Integer, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (int element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
         }
         return this;
     }
@@ -177,12 +193,12 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(long[] strings, Function<Long, String> serializer) {
+    public Joiner plus(long[] strings, Function<Long, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (long element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
         }
         return this;
     }
@@ -194,12 +210,12 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(float[] strings, Function<Float, String> serializer) {
+    public Joiner plus(float[] strings, Function<Float, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (float element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
         }
         return this;
     }
@@ -211,12 +227,12 @@ public class Joiner {
      * @param serializer 序列化器
      * @return this
      */
-    public Joiner withAll(double[] strings, Function<Double, String> serializer) {
+    public Joiner plus(double[] strings, Function<Double, String> serializer) {
         Preconditions.objectNonNull(strings, "strings");
         Preconditions.objectNonNull(serializer, "serializer");
 
         for (double element : strings) {
-            with(element, serializer);
+            plus(element, serializer);
         }
         return this;
     }
@@ -232,7 +248,7 @@ public class Joiner {
         Preconditions.objectNonNull(iterable, "iterable");
         Preconditions.objectNonNull(serializer, "serializer");
     
-        iterable.forEach(x -> with(x, serializer));
+        iterable.forEach(x -> plus(x, serializer));
         return this;
     }
     
@@ -242,7 +258,7 @@ public class Joiner {
      * @param objects 元素
      * @return this
      */
-    public Joiner withAll(Object[] objects) {
+    public Joiner plus(Object[] objects) {
         Preconditions.objectNonNull(objects, "objects");
 
         return withAll(objects, Objects::toString);
@@ -254,10 +270,23 @@ public class Joiner {
      * @param iterable 元素
      * @return this
      */
-    public Joiner withAll(Iterable<?> iterable) {
+    public Joiner plus(Iterable<?> iterable) {
         Preconditions.objectNonNull(iterable, "iterable");
     
         return withAll(iterable, Objects::toString);
+    }
+    
+    /**
+     * 添加若干元素
+     *
+     * @param iterable 元素
+     * @param serializer 序列化器
+     * @return this
+     */
+    public <T> Joiner plus(Iterable<T> iterable, Function<T, String> serializer) {
+        Preconditions.objectNonNull(iterable, "iterable");
+    
+        return withAll(iterable, serializer);
     }
     
     /**

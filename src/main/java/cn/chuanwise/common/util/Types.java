@@ -14,21 +14,23 @@ import java.util.stream.Collectors;
  * @author Chuanwise
  */
 public class Types
-        extends StaticUtilities {
+    extends StaticUtilities {
+    
     @Data
     private static class TypeTree {
         protected final TypeTree parent;
-
+    
         protected final Type currentType;
+        
         protected final Class<?> currentClass;
-
+    
         protected final Set<TypeTree> sons = new HashSet<>();
-
+    
         public TypeTree(TypeTree parent, Type currentType) {
             Preconditions.nonNull(currentType, "current type");
             this.currentType = currentType;
             this.parent = parent;
-
+        
             if (currentType instanceof Class) {
                 currentClass = (Class<?>) currentType;
             } else if (currentType instanceof ParameterizedType) {
@@ -41,9 +43,9 @@ public class Types
             } else {
                 throw new IllegalStateException();
             }
-
+        
             final Type genericSuperclass = currentClass.getGenericSuperclass();
-
+        
             if (Objects.nonNull(genericSuperclass)) {
                 sons.add(new TypeTree(this, genericSuperclass));
             }
@@ -51,7 +53,7 @@ public class Types
                 sons.add(new TypeTree(this, genericInterface));
             }
         }
-
+    
         @Override
         public boolean equals(Object o) {
             if (this == o) {
@@ -63,48 +65,87 @@ public class Types
             TypeTree typeTree = (TypeTree) o;
             return Objects.equals(currentType, typeTree.currentType);
         }
-
+    
         @Override
         public int hashCode() {
             return java.util.Objects.hash(currentType);
         }
-
+    
         @Override
         public String toString() {
             return currentType.toString();
         }
-
-        public List<List<TypeTree>> pathOf(Class<?> clazz) {
-            final List<List<TypeTree>> results = pathOf0(clazz);
+    
+        public List<List<TypeTree>> pathOf(Type type) {
+            final List<List<TypeTree>> results = pathOf0(type);
             if (results.isEmpty()) {
                 return java.util.Collections.emptyList();
             } else {
                 return results.stream()
-                        .map(java.util.Collections::unmodifiableList)
-                        .collect(Collectors.toList());
+                    .map(java.util.Collections::unmodifiableList)
+                    .collect(Collectors.toList());
             }
         }
-
-        private List<List<TypeTree>> pathOf0(Class<?> clazz) {
-            Preconditions.nonNull(clazz, "class");
-
-            if (Objects.equals(currentClass, clazz)) {
+    
+        private List<List<TypeTree>> pathOf0(Type type) {
+            Preconditions.nonNull(type, "type");
+        
+            if (Objects.equals(currentClass, type)) {
                 final List<List<TypeTree>> paths = new ArrayList<>();
                 final List<TypeTree> singlePath = new ArrayList<>();
                 singlePath.add(this);
                 paths.add(singlePath);
                 return paths;
             }
-
+        
             final List<List<TypeTree>> lists = sons.stream()
-                    .map(x -> x.pathOf0(clazz))
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                .map(x -> x.pathOf0(type))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
             lists.forEach(x -> x.add(0, this));
             return lists;
         }
     }
-
+    
+    /**
+     * <p>获取类型之间的距离。</p>
+     *
+     * <p>类型之间的距离指的是继承或实现的距离。例如：<pre>{@code
+     * class Grandparent {
+     * }
+     * class Parent extends Grandparent {
+     * }
+     * class Son extends Parent {
+     * }
+     * }</pre>则调用 {@code getTypeDistanceTo(Son.class, Parent.class)} 返回 1，表示 Son 往上一层便是 Parent。</p>
+     *
+     * @param sonType    子类型
+     * @param parentType 父类型
+     * @return 类型之间的距离
+     * @throws NullPointerException     sonType 或 parentType 为 null
+     * @throws IllegalArgumentException sonType 不是 parentType 的子类
+     */
+    public static int getTypeDistanceTo(Type sonType, Type parentType) {
+        Preconditions.objectNonNull(sonType, "son type");
+        Preconditions.objectNonNull(parentType, "parent type");
+        
+        if (Objects.equals(sonType, parentType)) {
+            return 0;
+        }
+    
+        final TypeTree typeTree = new TypeTree(null, sonType);
+        final List<List<TypeTree>> paths = typeTree.pathOf(parentType);
+        
+        Preconditions.argumentNonEmpty(paths, sonType.getTypeName() + " is not a subclass of " + parentType.getTypeName());
+        
+        int min = Integer.MAX_VALUE;
+        for (List<TypeTree> path : paths) {
+            min = Math.min(path.size(), min);
+        }
+        
+        return min - 1;
+    }
+    
     /**
      * 获得某类作为某仅具备唯一泛型参数的泛型类的子类，在泛型参数处的实际类型。
      *
@@ -118,14 +159,14 @@ public class Types
     public static Type getTypeParameterType(Type sonType, Class<?> genericClass) {
         Preconditions.nonNull(sonType, "son class");
         Preconditions.nonNull(genericClass, "generic class");
-
+    
         final TypeVariable<? extends Class<?>>[] typeParameters = genericClass.getTypeParameters();
         Preconditions.argument(typeParameters.length != 0, "class: " + genericClass.getName() + " is not generic.");
         Preconditions.argument(typeParameters.length == 1, "there are multiple type parameters in generic class: " + genericClass.getName());
-
+    
         return getTypeParameterType(sonType, genericClass, 0);
     }
-
+    
     /**
      * 计算类型参数的实际类型
      *
@@ -143,11 +184,11 @@ public class Types
         Preconditions.objectNonNull(sonType, "son class");
         Preconditions.objectNonNull(genericClass, "generic class");
         Preconditions.objectArgumentNonEmpty(parameterName, "parameter name");
-
+    
         // 寻找泛型参数
         final TypeVariable<? extends Class<?>>[] typeParameters = genericClass.getTypeParameters();
         Preconditions.argument(typeParameters.length != 0, "class: " + genericClass.getName() + " is not generic.");
-
+    
         // 寻找泛型参数的索引
         int parameterIndex = -1;
         for (int i = 0; i < typeParameters.length; i++) {
@@ -157,10 +198,10 @@ public class Types
             }
         }
         Preconditions.argument(parameterIndex != -1, "there is no such type parameter object \"" + parameterName + "\" in class: " + genericClass.getName());
-
+    
         return getTypeParameterType(sonType, genericClass, parameterIndex);
     }
-
+    
     /**
      * 计算类型参数的实际类型
      *
@@ -176,37 +217,37 @@ public class Types
     public static Type getTypeParameterType(Type sonType, Class<?> genericClass, int parameterIndex) {
         Preconditions.objectNonNull(sonType, "son type");
         Preconditions.objectNonNull(genericClass, "generic class");
-
+    
         Preconditions.argument(!Objects.equals(sonType, genericClass), "can not find the type parameter type of a generic class itself.");
-
+    
         // 寻找泛型参数
         final TypeVariable<? extends Class<?>>[] typeParameters = genericClass.getTypeParameters();
         Preconditions.argument(typeParameters.length != 0, "class: " + genericClass.getName() + " is not generic.");
         Preconditions.index(parameterIndex, typeParameters.length, "type parameter index");
 //        Preconditions.argument(!Objects.equals(sonType, genericClass), "son class can not be generic class itself.");
-
+    
         // 搜索该类型的继承树
         // 并寻找到指定的泛型类
         final TypeTree typeTree = new TypeTree(null, sonType);
         final List<List<TypeTree>> lists = typeTree.pathOf(genericClass);
         Preconditions.argument(!lists.isEmpty(), "type: " + sonType.getTypeName() + " is not a son class of class: " + genericClass.getName());
         final List<TypeTree> inheritanceChain = lists.get(0);
-
+    
         // 顺着 path 一路往前找
         // 这里的长度如果大于 1，可以顺着引用链查找
         Preconditions.state(inheritanceChain.size() > 0, "inheritance chain length is not greater than 0!");
-
+    
         for (int i = inheritanceChain.size() - 1; i > 0; i--) {
             final TypeTree parent = inheritanceChain.get(i);
             final TypeTree son = inheritanceChain.get(i - 1);
-
+        
             final Type parentType = parent.getCurrentType();
             final Type currentType = son.getCurrentType();
-
+        
             if (parentType instanceof ParameterizedType) {
                 final ParameterizedType parentParameterizedType = (ParameterizedType) parentType;
                 final Type parentTypeArgument = parentParameterizedType.getActualTypeArguments()[parameterIndex];
-
+            
                 if (parentTypeArgument instanceof Class) {
                     return parentTypeArgument;
                 }
@@ -214,11 +255,11 @@ public class Types
                     // 如果 ArrayList<E> 继承自 AbstractList<I>
                     // 需要找到这个 I 和 E 的对应关系
                     final String name = ((TypeVariable<?>) parentTypeArgument).getName();
-
+    
                     // 此时子类必须是 ParameterizedType
                     Preconditions.state(currentType instanceof ParameterizedType, "son class of " + parentType.getTypeName() + " is not a parameterized type");
                     final ParameterizedType sonParameterizedType = (ParameterizedType) currentType;
-
+    
                     // 如果子的模板参数里没有正在寻找的 I
                     // 则应该已经是 Class，已经 return 了
                     // 所以只需要在子的模板参数中寻找
@@ -231,18 +272,18 @@ public class Types
                             break;
                         }
                     }
-
+    
                     Preconditions.state(parameterIndex != -1,
-                            "can not find the type parameter mapper between class: " + sonParameterizedType.getTypeName() + " and " + parentParameterizedType.getTypeName());
+                        "can not find the type parameter mapper between class: " + sonParameterizedType.getTypeName() + " and " + parentParameterizedType.getTypeName());
                     continue;
                 }
-
+            
                 return parentTypeArgument;
             } else {
                 throw new IllegalStateException();
             }
         }
-
+    
         // 如果还没有找到，或者只有一个元素，则第一个元素就是所需的
         if (sonType instanceof ParameterizedType) {
             final ParameterizedType parameterizedType = (ParameterizedType) sonType;
@@ -251,10 +292,10 @@ public class Types
                 return typeArguments[parameterIndex];
             }
         }
-
+    
         throw new IllegalStateException("can not find the type parameter chain between inheritance chain: " + inheritanceChain);
     }
-
+    
     /**
      * 计算某类型对应的类对象
      *
@@ -264,7 +305,7 @@ public class Types
      */
     public static Class<?> getTypeClass(Type type) {
         Preconditions.objectNonNull(type, "type");
-
+    
         if (type instanceof Class) {
             return ((Class<?>) type);
         }
@@ -281,10 +322,10 @@ public class Types
                 }
             } while (true);
         }
-
+    
         throw new IllegalArgumentException("can not find the raw class of type: " + type.getTypeName());
     }
-
+    
     /**
      * 获得某类作为某仅具备唯一泛型参数的泛型类的子类，在泛型参数处的实际类型。
      *
@@ -298,7 +339,7 @@ public class Types
     public static Class<?> getTypeParameterClass(Type sonType, Class<?> genericClass) {
         return getTypeClass(getTypeParameterType(sonType, genericClass));
     }
-
+    
     /**
      * 获得某泛型类的子类，在某泛型参数处的实际类型。
      *
@@ -314,7 +355,7 @@ public class Types
     public static Class<?> getTypeParameterClass(Type sonType, Class<?> genericClass, String parameterName) {
         return getTypeClass(getTypeParameterType(sonType, genericClass, parameterName));
     }
-
+    
     /**
      * 获得某泛型类的子类，在某泛型参数处的实际类型。
      *

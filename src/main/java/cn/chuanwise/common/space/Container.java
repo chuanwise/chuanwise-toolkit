@@ -37,7 +37,7 @@ public final class Container<T> {
     
     
     /**
-     * 通过 JDK 自带的 {@link Optional} 构造一个容器
+     * 通过 JDK 自带的 {@link Optional} 构造容器
      *
      * @param optional JDK 自带的 Optional
      * @param <U>      Optional 内含变量的类型
@@ -52,7 +52,7 @@ public final class Container<T> {
     }
     
     /**
-     * 由特定值构造一个容器
+     * 由特定值构造容器
      *
      * @param value 容器内的值
      * @param <U>   容器内的值类型
@@ -127,7 +127,7 @@ public final class Container<T> {
     }
     
     /**
-     * 构造一个特殊容器，仅限空容器和 null 值容器使用。
+     * 构造特殊容器，仅限空容器和 null 值容器使用。
      */
     private Container() {
         this.value = null;

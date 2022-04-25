@@ -113,6 +113,290 @@ public class Preconditions
      * 非空参数断言
      *
      * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(byte[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(byte[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(byte[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(char[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(char[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(char[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(short[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(short[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(short[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(int[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(int[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(int[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(long[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(long[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(long[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(float[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(float[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(float[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(double[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static void argumentNonEmpty(double[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static void objectArgumentNonEmpty(double[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param <T>      数组类型
+     * @throws NullPointerException     argument 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static <T> void argumentNonEmpty(T[] argument) {
+        argument(Arrays.nonEmpty(argument));
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
+     * @param message  异常信息
+     * @param <T>      数组类型
+     * @throws NullPointerException     argument 或 message 为 null
+     * @throws IllegalArgumentException argument 为空
+     */
+    public static <T> void argumentNonEmpty(T[] argument, String message) {
+        argument(Arrays.nonEmpty(argument), message);
+    }
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument   参数
+     * @param objectName 对象名
+     * @param <T>        数组类型
+     * @throws IllegalArgumentException argument 为 null
+     * @throws NullPointerException     message 为 null
+     */
+    public static <T> void objectArgumentNonEmpty(T[] argument, String objectName) {
+        argumentNonEmpty(argument, objectName + " is empty");
+    }
+    
+    
+    /**
+     * 非空参数断言
+     *
+     * @param argument 参数
      * @throws IllegalArgumentException argument 为 null
      */
     public static void argumentNonEmpty(Collection<?> argument) {
@@ -163,7 +447,7 @@ public class Preconditions
      */
     public static void objectArgumentNonEmpty(String argument, String name) {
         objectNonNull(name, "name");
-        argumentNonEmpty(argument, name + " is null");
+        argumentNonEmpty(argument, name + " is empty");
     }
     
     /**
@@ -176,7 +460,7 @@ public class Preconditions
      */
     public static void objectArgumentNonEmpty(Collection<?> argument, String name) {
         objectNonNull(name, "name");
-        argumentNonEmpty(argument, name + " is null");
+        argumentNonEmpty(argument, name + " is empty");
     }
     
     /**
@@ -189,7 +473,7 @@ public class Preconditions
      */
     public static void objectArgumentNonEmpty(Emptiable argument, String name) {
         objectNonNull(name, "name");
-        argumentNonEmpty(argument, name + " is null");
+        argumentNonEmpty(argument, name + " is empty");
     }
     
     /**
@@ -304,7 +588,7 @@ public class Preconditions
      * 位置断言
      *
      * @param position 位置值
-     * @param bound 位置值上限
+     * @param bound    位置值上限
      * @throws IndexOutOfBoundsException position >= 0 且 position < bound
      * @throws IllegalArgumentException  bound < 0
      */
@@ -316,9 +600,9 @@ public class Preconditions
     /**
      * 位置断言
      *
-     * @param position   位置值
-     * @param bound   位置值上限
-     * @param message 异常信息
+     * @param position 位置值
+     * @param bound    位置值上限
+     * @param message  异常信息
      * @throws IndexOutOfBoundsException position >= 0 且 position <= bound
      * @throws IllegalArgumentException  bound < 0
      */
@@ -344,8 +628,8 @@ public class Preconditions
      * 位置断言
      *
      * @param position 位置值
-     * @param bound 位置值上限
-     * @param name  位置名
+     * @param bound    位置值上限
+     * @param name     位置名
      * @throws IndexOutOfBoundsException position >= 0 且 position < bound
      * @throws IllegalArgumentException  name 为 null
      */
@@ -395,8 +679,8 @@ public class Preconditions
     /**
      * 操作为空断言
      *
-     * @param reference   对象
-     * @param message 异常信息
+     * @param reference 对象
+     * @param message   异常信息
      * @throws UnsupportedOperationException reference 非 null
      * @throws IllegalArgumentException      message 为 null
      */
@@ -419,8 +703,8 @@ public class Preconditions
     /**
      * 操作非空断言
      *
-     * @param reference   对象
-     * @param message 异常信息
+     * @param reference 对象
+     * @param message   异常信息
      * @throws UnsupportedOperationException reference 为 null
      * @throws IllegalArgumentException      message 为 null
      */

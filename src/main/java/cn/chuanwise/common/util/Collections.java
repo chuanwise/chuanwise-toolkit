@@ -500,7 +500,7 @@ public class Collections
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(iterable)
+            .plus(iterable, translator)
             .join();
     }
     
@@ -573,4 +573,6 @@ public class Collections
         set.retainAll(c2);
         return asUnmodifiableSet(set);
     }
+    
+    
 }

@@ -1,5 +1,6 @@
 package cn.chuanwise.common.api;
 
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
 /**
@@ -9,7 +10,7 @@ import java.util.function.Supplier;
  */
 @FunctionalInterface
 public interface ExceptionSupplier<T>
-    extends Supplier<T> {
+    extends Supplier<T>, Callable<T> {
     
     /**
      * 调用 {@link #exceptGet()}
@@ -35,4 +36,10 @@ public interface ExceptionSupplier<T>
      * @see Supplier#get()
      */
     T exceptGet() throws Exception;
+    
+    @Override
+    @SuppressWarnings("all")
+    default T call() throws Exception {
+        return exceptGet();
+    }
 }

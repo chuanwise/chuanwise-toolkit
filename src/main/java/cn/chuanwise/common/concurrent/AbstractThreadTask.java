@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class AbstractThreadTask
     extends AbstractTask
-    implements Runnable, Cancellable {
+    implements Runnable, Task {
     
     /**
      * 任务执行状态
@@ -54,29 +54,32 @@ public abstract class AbstractThreadTask
      */
     protected volatile Thread thread;
     
-    private volatile boolean interruptedInCancelling;
-    
     /**
      * 设置最终状态时的信号量
      */
-    private final Object mutex = new Object();
+    protected final Object mutex = new Object();
     
     @SuppressWarnings("all")
-    private void setFinalState(State state) {
+    private void setDoneState(State state) {
         this.state = state;
     
         synchronized (mutex) {
             mutex.notifyAll();
         }
         
-        for (ActionListener listener : listeners) {
-            listener.actionDone(this);
+        for (ActionListener listener : doneListeners) {
+            listener.listen(this);
         }
     }
     
     @Override
     public boolean isSucceed() {
         return state == State.SUCCEED;
+    }
+    
+    @Override
+    public boolean isExecuting() {
+        return state == State.EXECUTING;
     }
     
     @Override
@@ -100,17 +103,12 @@ public abstract class AbstractThreadTask
     public boolean cancel(boolean interrupt) {
         switch (state) {
             case INITIALIZED:
-                setFinalState(State.CANCELLED);
+                setDoneState(State.CANCELLED);
                 return true;
             case EXECUTING:
-                setFinalState(State.CANCELLED);
+                setDoneState(State.CANCELLED);
                 if (interrupt) {
-                    try {
-                        interruptedInCancelling = true;
-                        thread.interrupt();
-                    } finally {
-                        interruptedInCancelling = false;
-                    }
+                    thread.interrupt();
                 }
                 return true;
             case SUCCEED:
@@ -150,20 +148,20 @@ public abstract class AbstractThreadTask
             // the state will be cancelled
             // or set state to succeed
             if (state == State.EXECUTING) {
-                setFinalState(state = State.SUCCEED);
+                setDoneState(State.SUCCEED);
             }
         } catch (Throwable throwable) {
             // if it's cancelling in interrupt
             // and the exception is caused by interrupting
             // ignore it
-            if (interruptedInCancelling && throwable instanceof InterruptedException) {
+            if (state == State.CANCELLED && throwable instanceof InterruptedException) {
                 return;
             }
             
             // set state to failed
             // and record the exception
             cause = throwable;
-            setFinalState(State.FAILED);
+            setDoneState(State.FAILED);
         } finally {
             thread = null;
         }
@@ -172,12 +170,12 @@ public abstract class AbstractThreadTask
     /**
      * 真正执行相关操作
      *
-     * @throws Throwable 执行操作时抛出的异常
+     * @throws Exception 执行操作时抛出的异常
      */
-    protected abstract void run0() throws Throwable;
+    protected abstract void run0() throws Exception;
     
     @Override
-    public void sync() throws InterruptedException {
+    public void awaitDone() throws InterruptedException {
         switch (state) {
             case INITIALIZED:
             case EXECUTING:
@@ -193,7 +191,7 @@ public abstract class AbstractThreadTask
     }
     
     @Override
-    public void syncUninterruptibly() {
+    public void awaitDoneUninterruptibly() {
         switch (state) {
             case INITIALIZED:
             case EXECUTING:
@@ -209,7 +207,7 @@ public abstract class AbstractThreadTask
     }
     
     @Override
-    public boolean await(long timeout) throws InterruptedException {
+    public boolean awaitDone(long timeout) throws InterruptedException {
         switch (state) {
             case INITIALIZED:
             case EXECUTING:
@@ -224,7 +222,7 @@ public abstract class AbstractThreadTask
     }
     
     @Override
-    public boolean await(long timeout, TimeUnit timeUnit) throws InterruptedException {
+    public boolean awaitDone(long timeout, TimeUnit timeUnit) throws InterruptedException {
         switch (state) {
             case INITIALIZED:
             case EXECUTING:
@@ -239,7 +237,7 @@ public abstract class AbstractThreadTask
     }
     
     @Override
-    public boolean awaitUninterruptibly(long timeout) {
+    public boolean awaitDoneUninterruptibly(long timeout) {
         switch (state) {
             case INITIALIZED:
             case EXECUTING:
@@ -254,7 +252,7 @@ public abstract class AbstractThreadTask
     }
     
     @Override
-    public boolean awaitUninterruptibly(long timeout, TimeUnit timeUnit) {
+    public boolean awaitDoneUninterruptibly(long timeout, TimeUnit timeUnit) {
         switch (state) {
             case INITIALIZED:
             case EXECUTING:

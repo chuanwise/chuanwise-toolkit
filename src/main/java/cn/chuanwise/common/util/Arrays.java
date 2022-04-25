@@ -260,16 +260,6 @@ public class Arrays
     }
     
     /**
-     * 判断数组是否为空
-     *
-     * @param array 数组
-     * @return 如果数组为 null 或 length 为 0，返回 false，否则返回 true
-     */
-    public static boolean isEmpty(byte[] array) {
-        return array == null || array.length == 0;
-    }
-    
-    /**
      * 判断数组是否非空
      *
      * @param array 数组
@@ -3142,7 +3132,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3194,7 +3184,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3246,7 +3236,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3298,7 +3288,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3350,7 +3340,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3402,7 +3392,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3454,7 +3444,7 @@ public class Arrays
         return Joiner.builder()
             .delimiter(delimiter)
             .build()
-            .withAll(array, translator)
+            .plus(array, translator)
             .join();
     }
     
@@ -3487,6 +3477,433 @@ public class Arrays
      * @return 代表数组内容的字符串，或空字符串 ""
      */
     public static String toString(double[] array) {
+        return toString(array, java.util.Objects::toString, ", ");
+    }
+    
+    /**
+     * 对数组拆箱
+     *
+     * @param array 包装类型数组
+     * @return 拆箱后的数组
+     * @throws NullPointerException     包装类型数组中有 null
+     * @throws IllegalArgumentException 包装类型数组是 null
+     */
+    public static byte[] unbox(Byte[] array) {
+        Preconditions.objectNonNull(array, "array");
+        
+        final byte[] newArray = new byte[array.length];
+        for (int i = 0; i < newArray.length; i++) {
+            newArray[i] = array[i];
+        }
+        return newArray;
+    }
+    
+    /**
+     * 对数组装箱
+     *
+     * @param array 基本类型数组
+     * @return 装箱后的数组
+     * @throws IllegalArgumentException 包装类型数组是 null
+     */
+    public static Byte[] box(byte[] array) {
+        Preconditions.objectNonNull(array, "array");
+        
+        final Byte[] newArray = new Byte[array.length];
+        for (int i = 0; i < newArray.length; i++) {
+            newArray[i] = array[i];
+        }
+        return newArray;
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array        数组
+     * @param value        值
+     * @param beginIndex   起始索引
+     * @param defaultIndex 默认索引
+     * @return 在起始索引后找到时返回其索引，否则返回默认索引
+     */
+    public static int indexOf(byte[] array, byte value, int beginIndex, int defaultIndex) {
+        Preconditions.objectNonNull(array, "array");
+        
+        if (array.length == 0) {
+            return defaultIndex;
+        }
+        Preconditions.objectIndex(beginIndex, array.length, "start index");
+        
+        for (int i = beginIndex; i < array.length; i++) {
+            if (array[i] == value) {
+                return i;
+            }
+        }
+        
+        return defaultIndex;
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array      数组
+     * @param value      值
+     * @param beginIndex 起始索引
+     * @return 在起始索引后找到时返回其索引，否则返回 -1
+     */
+    public static int indexOf(byte[] array, byte value, int beginIndex) {
+        return indexOf(array, value, beginIndex, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array 数组
+     * @param value 值
+     * @return 找到时返回其索引，否则返回 -1
+     */
+    public static int indexOf(byte[] array, byte value) {
+        return indexOf(array, value, 0, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array        数组
+     * @param value        值
+     * @param beginIndex   起始索引
+     * @param defaultIndex 默认索引
+     * @return 在起始索引后找到时返回其索引，否则返回默认索引
+     */
+    public static int lastIndexOf(byte[] array, byte value, int beginIndex, int defaultIndex) {
+        Preconditions.objectNonNull(array, "array");
+        
+        if (array.length == 0) {
+            return defaultIndex;
+        }
+        Preconditions.objectIndex(beginIndex, array.length, "start index");
+        
+        for (int i = array.length - 1; i >= beginIndex; i--) {
+            if (array[i] == value) {
+                return i;
+            }
+        }
+        
+        return defaultIndex;
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array      数组
+     * @param value      值
+     * @param beginIndex 起始索引
+     * @return 在起始索引后找到时返回其索引，否则返回 -1
+     */
+    public static int lastIndexOf(byte[] array, byte value, int beginIndex) {
+        return lastIndexOf(array, value, beginIndex, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array 数组
+     * @param value 值
+     * @return 找到时返回其索引，否则返回 -1
+     */
+    public static int lastIndexOf(byte[] array, byte value) {
+        return lastIndexOf(array, value, 0, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array        数组
+     * @param filter       筛选器
+     * @param beginIndex   起始索引
+     * @param defaultIndex 默认索引
+     * @return 在起始索引后找到时返回其索引，否则返回默认索引
+     */
+    public static int indexIf(byte[] array, Predicate<Byte> filter, int beginIndex, int defaultIndex) {
+        Preconditions.objectNonNull(array, "array");
+        Preconditions.objectNonNull(filter, "filter");
+        
+        if (array.length == 0) {
+            return defaultIndex;
+        }
+        Preconditions.objectIndex(beginIndex, array.length, "start index");
+        
+        for (int i = beginIndex; i < array.length; i++) {
+            if (filter.test(array[i])) {
+                return i;
+            }
+        }
+        
+        return defaultIndex;
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array      数组
+     * @param filter     筛选器
+     * @param beginIndex 起始索引
+     * @return 在起始索引后找到时返回其索引，否则返回 -1
+     */
+    public static int indexIf(byte[] array, Predicate<Byte> filter, int beginIndex) {
+        return indexIf(array, filter, beginIndex, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array  数组
+     * @param filter 筛选器
+     * @return 找到时返回其索引，否则返回 -1
+     */
+    public static int indexIf(byte[] array, Predicate<Byte> filter) {
+        return indexIf(array, filter, 0, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array        数组
+     * @param filter       筛选器
+     * @param beginIndex   起始索引
+     * @param defaultIndex 默认索引
+     * @return 在起始索引后找到时返回其索引，否则返回默认索引
+     */
+    public static int lastIndexIf(byte[] array, Predicate<Byte> filter, int beginIndex, int defaultIndex) {
+        Preconditions.objectNonNull(array, "array");
+        Preconditions.objectNonNull(filter, "filter");
+        
+        if (array.length == 0) {
+            return defaultIndex;
+        }
+        Preconditions.objectIndex(beginIndex, array.length, "start index");
+        
+        for (int i = array.length - 1; i >= beginIndex; i--) {
+            if (filter.test(array[i])) {
+                return i;
+            }
+        }
+        
+        return defaultIndex;
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array      数组
+     * @param filter     筛选器
+     * @param beginIndex 起始索引
+     * @return 在起始索引后找到时返回其索引，否则返回 -1
+     */
+    public static int lastIndexIf(byte[] array, Predicate<Byte> filter, int beginIndex) {
+        return lastIndexIf(array, filter, beginIndex, -1);
+    }
+    
+    /**
+     * 在数组中查找一个值
+     *
+     * @param array  数组
+     * @param filter 筛选器
+     * @return 找到时返回其索引，否则返回 -1
+     */
+    public static int lastIndexIf(byte[] array, Predicate<Byte> filter) {
+        return lastIndexIf(array, filter, 0, -1);
+    }
+    
+    /**
+     * 判断数组是否为空
+     *
+     * @param array 数组
+     * @return 如果数组为 null 或 length 为 0，返回 false，否则返回 true
+     */
+    public static boolean isEmpty(byte[] array) {
+        return array == null || array.length == 0;
+    }
+    
+    /**
+     * 判断数组是否非空
+     *
+     * @param array 数组
+     * @return 如果数组为 null 或 length 为 0，返回 true，否则返回 false
+     */
+    public static boolean nonEmpty(byte[] array) {
+        return array != null && array.length != 0;
+    }
+    
+    /**
+     * 判断数组是否包含某个元素
+     *
+     * @param array      数组
+     * @param beginIndex 起始索引
+     * @return 如果数组包含该元素，返回 true，否则返回 false
+     */
+    public static boolean contains(byte[] array, byte value, int beginIndex) {
+        return indexOf(array, value, beginIndex) != -1;
+    }
+    
+    /**
+     * 判断数组是否包含某个元素
+     *
+     * @param array 数组
+     * @return 如果数组包含该元素，返回 true，否则返回 false
+     */
+    public static boolean contains(byte[] array, byte value) {
+        return indexOf(array, value) != -1;
+    }
+    
+    /**
+     * 判断数组是否包含某个元素
+     *
+     * @param array      数组
+     * @param beginIndex 起始索引
+     * @return 如果数组包含该元素，返回 true，否则返回 false
+     */
+    public static boolean containsIf(byte[] array, Predicate<Byte> filter, int beginIndex) {
+        return indexIf(array, filter, beginIndex) != -1;
+    }
+    
+    /**
+     * 判断数组是否包含某个元素
+     *
+     * @param array 数组
+     * @return 如果数组包含该元素，返回 true，否则返回 false
+     */
+    public static boolean containsIf(byte[] array, Predicate<Byte> filter) {
+        return indexIf(array, filter) != -1;
+    }
+    
+    /**
+     * 寻找数组中第一个满足要求的对象
+     *
+     * @param array        数组
+     * @param filter       筛选器
+     * @param defaultValue 默认值
+     * @return 当在集合中找到满足筛选器的元素时返回元素，否则返回默认值
+     */
+    public static byte firstIf(byte[] array, Predicate<Byte> filter, byte defaultValue) {
+        Preconditions.objectNonNull(array, "array");
+        Preconditions.objectNonNull(filter, "filter");
+        
+        for (byte t : array) {
+            if (filter.test(t)) {
+                return t;
+            }
+        }
+        
+        return defaultValue;
+    }
+    
+    /**
+     * 寻找数组中第一个满足要求的对象
+     *
+     * @param array  数组
+     * @param filter 筛选器
+     * @return 当在集合中找到满足筛选器的元素时返回元素，否则返回 false
+     */
+    public static byte firstIf(byte[] array, Predicate<Byte> filter) {
+        return firstIf(array, filter, (byte) -1);
+    }
+    
+    /**
+     * 在数组中从后往前查找第一个满足要求的对象
+     *
+     * @param array        数组
+     * @param filter       筛选器
+     * @param beginIndex   最早找到哪个元素
+     * @param defaultValue 默认值
+     * @return 当在数组中从后往前找到满足筛选器的元素时返回元素，否则返回默认值
+     */
+    public static byte lastOf(byte[] array, Predicate<Byte> filter, int beginIndex, byte defaultValue) {
+        Preconditions.objectNonNull(array, "list");
+        Preconditions.objectNonNull(filter, "filter");
+        Preconditions.objectPosition(beginIndex, array.length, "begin");
+        
+        for (int i = array.length - 1; i >= beginIndex; i--) {
+            final byte t = array[i];
+            if (filter.test(t)) {
+                return t;
+            }
+        }
+        
+        return defaultValue;
+    }
+    
+    /**
+     * 在数组中从后往前查找第一个满足要求的对象
+     *
+     * @param array      数组
+     * @param filter     筛选器
+     * @param beginIndex 最早找到哪个元素
+     * @return 当在数组中从后往前找到满足筛选器的元素时返回元素，否则返回 -1
+     */
+    public static byte lastOf(byte[] array, Predicate<Byte> filter, int beginIndex) {
+        return lastOf(array, filter, beginIndex, (byte) -1);
+    }
+    
+    /**
+     * 在数组中从后往前查找第一个满足要求的对象
+     *
+     * @param array  数组
+     * @param filter 筛选器
+     * @return 当在数组中从后往前找到满足筛选器的元素时返回元素，否则返回 -1
+     */
+    public static byte lastOf(byte[] array, Predicate<Byte> filter) {
+        return lastOf(array, filter, 0, (byte) -1);
+    }
+    
+    
+    /**
+     * 将数组转化为字符串
+     *
+     * @param array 数组
+     * @param translator 转化为字符串的工具
+     * @param delimiter 分隔符
+     * @return 代表数组内容的字符串，或空字符串 ""
+     */
+    public static String toString(byte[] array, Function<Byte, String> translator, String delimiter) {
+        Preconditions.objectNonNull(array, "array");
+        Preconditions.objectNonNull(translator, "translator");
+        Preconditions.objectNonNull(delimiter, "delimiter");
+        
+        return Joiner.builder()
+            .delimiter(delimiter)
+            .build()
+            .plus(array, translator)
+            .join();
+    }
+    
+    /**
+     * 将数组转化为字符串，默认分隔符为 ", "
+     *
+     * @param array 数组
+     * @param translator 转化为字符串的工具
+     * @return 代表数组内容的字符串，或空字符串 ""
+     */
+    public static String toString(byte[] array, Function<Byte, String> translator) {
+        return toString(array, translator, ", ");
+    }
+    
+    /**
+     * 将数组转化为字符串，默认转化器是 {@link Objects#toString()}
+     *
+     * @param array 数组
+     * @param delimiter 分隔符
+     * @return 代表数组内容的字符串，或空字符串 ""
+     */
+    public static String toString(byte[] array, String delimiter) {
+        return toString(array, java.util.Objects::toString, delimiter);
+    }
+    
+    /**
+     * 将数组转化为字符串，默认转化器是 {@link Objects#toString()}，分隔符是 ", "
+     *
+     * @param array 数组
+     * @return 代表数组内容的字符串，或空字符串 ""
+     */
+    public static String toString(byte[] array) {
         return toString(array, java.util.Objects::toString, ", ");
     }
 }

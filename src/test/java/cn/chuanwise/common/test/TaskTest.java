@@ -1,83 +1,47 @@
 package cn.chuanwise.common.test;
 
-import cn.chuanwise.common.concurrent.AbstractTask;
-import cn.chuanwise.common.concurrent.Cancellable;
-import cn.chuanwise.common.concurrent.Task;
+import cn.chuanwise.common.concurrent.ThreadPeriodicTask;
 import cn.chuanwise.common.concurrent.ThreadTask;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskTest {
     
-    static Task task;
-    
-    static ExecutorService threadPool = Executors.newCachedThreadPool();
-    
-    static AtomicInteger flag = new AtomicInteger();
-    
-    static AtomicBoolean shouldFailed = new AtomicBoolean();
-    
-    @BeforeAll
-    static void buildTask() {
-        ThreadTask task = new ThreadTask(() -> {
-            TimeUnit.SECONDS.sleep(5);
-            if (shouldFailed.get()) {
-                throw new Exception();
+    public static void main(String[] args) throws InterruptedException {
+        final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(5);
+        
+        final ThreadTask task1 = new ThreadTask(() -> {
+            while (true) {
+                System.out.println("passed 1 sec, cur = " + System.currentTimeMillis());
+                TimeUnit.SECONDS.sleep(1);
             }
-    
-            flag.set(1);
         });
-        TaskTest.task = task;
+    
+        final ThreadPeriodicTask task2 = new ThreadPeriodicTask(() -> {
+            System.out.println("time millis is " + System.currentTimeMillis());
+        });
+        task2.registerDoneListener(task -> {
+            System.out.println("periodic task done");
+        });
+        task2.registerPeriodicListener(task -> {
+            System.out.println("periodic task periodic");
+        });
+    
+        task1.registerDoneListener(t -> {
+            System.out.println("task done! " + t + ", executor = " + Thread.currentThread().getName());
+        });
         
-        threadPool.submit(task);
-    }
-    
-    @Test
-    void testSync() throws InterruptedException {
-        Assertions.assertEquals(0, flag.get());
-        task.sync();
-        Assertions.assertEquals(1, flag.get());
-    }
-    
-    @Test
-    void testIsDone() throws InterruptedException {
-        Assertions.assertFalse(task.isDone());
-        task.sync();
-        Assertions.assertTrue(task.isDone());
-    }
-    
-    @Test
-    void testIsSucceed() throws InterruptedException {
-        Assertions.assertFalse(task.isSucceed());
-        task.sync();
-        Assertions.assertTrue(task.isSucceed());
-        Assertions.assertFalse(task.isFailed());
-    }
-    
-    @Test
-    void testIsFailed() throws InterruptedException {
-        Assertions.assertFalse(task.isFailed());
-        shouldFailed.set(true);
-        task.sync();
-        Assertions.assertTrue(task.isDone());
-        Assertions.assertTrue(task.isFailed());
-        Assertions.assertFalse(task.isSucceed());
+        threadPool.submit(task1);
+        threadPool.scheduleWithFixedDelay(task2, 0, 1, TimeUnit.SECONDS);
         
-        Assertions.assertInstanceOf(Exception.class, task.getCause());
-    }
-    
-    @Test
-    void testCancelled() {
-        final Cancellable cancellable = (Cancellable) task;
-        Assertions.assertFalse(cancellable.isCancelled());
-        cancellable.cancel(true);
-        Assertions.assertTrue(cancellable.isCancelled());
+        TimeUnit.SECONDS.sleep(10);
+        System.out.println("will cancel the task!");
+        System.out.println("cancel 1: " + task1.cancel(true));
+        System.out.println("cancel 2: " + task2.cancel(true));
+        
+        TimeUnit.SECONDS.sleep(5);
     }
 }
