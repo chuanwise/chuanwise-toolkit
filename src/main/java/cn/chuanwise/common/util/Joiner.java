@@ -1,7 +1,5 @@
 package cn.chuanwise.common.util;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -11,7 +9,6 @@ import java.util.function.Function;
  *
  * @author Chuanwise
  */
-@Getter
 public class Joiner {
     
     protected String prefix;
@@ -22,7 +19,6 @@ public class Joiner {
     
     protected String emptyString;
     
-    @Getter(AccessLevel.NONE)
     protected StringBuilder stringBuilder = new StringBuilder();
     
     protected boolean nullable;

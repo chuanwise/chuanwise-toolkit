@@ -1,7 +1,5 @@
 package cn.chuanwise.common.util;
 
-import lombok.Data;
-
 import java.util.Iterator;
 
 /**
@@ -10,7 +8,6 @@ import java.util.Iterator;
  * @author Chuanwise
  * @param <T> 迭代元素类型
  */
-@Data
 public class SingletonIterator<T>
     implements Iterator<T> {
     

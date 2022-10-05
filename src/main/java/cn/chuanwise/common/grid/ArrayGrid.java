@@ -1,11 +1,9 @@
 package cn.chuanwise.common.grid;
 
 import cn.chuanwise.common.util.Preconditions;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * 使用一维数组实现的网格
@@ -14,11 +12,9 @@ import java.util.Optional;
  * @author Chuanwise
  */
 @SuppressWarnings("all")
-@EqualsAndHashCode
 public class ArrayGrid<T>
     implements Grid<T> {
     
-    @Getter
     protected final int columnCount, rowCount;
     
     protected final Object[] array;
@@ -31,7 +27,17 @@ public class ArrayGrid<T>
         this.rowCount = rowCount;
         this.array = new Object[columnCount * rowCount];
     }
-
+    
+    @Override
+    public int getColumnCount() {
+        return columnCount;
+    }
+    
+    @Override
+    public int getRowCount() {
+        return rowCount;
+    }
+    
     @Override
     public void set(int index, T t) {
         Preconditions.index(index, array.length, "originalIndex");
@@ -54,5 +60,22 @@ public class ArrayGrid<T>
             }
         }
         return -1;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayGrid<?> arrayGrid = (ArrayGrid<?>) o;
+        return columnCount == arrayGrid.columnCount
+            && rowCount == arrayGrid.rowCount
+            && Arrays.equals(array, arrayGrid.array);
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(columnCount, rowCount);
+        result = 31 * result + Arrays.hashCode(array);
+        return result;
     }
 }

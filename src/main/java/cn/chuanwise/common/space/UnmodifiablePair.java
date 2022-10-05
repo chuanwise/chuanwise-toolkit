@@ -1,14 +1,11 @@
 package cn.chuanwise.common.space;
 
-import lombok.Data;
-
 /**
  * @author Chuanwise
  *
  * @see cn.chuanwise.common.space.Pair
  * @see java.util.Map.Entry
  */
-@Data
 public class UnmodifiablePair<K, V>
     implements Pair<K, V> {
     
@@ -19,6 +16,16 @@ public class UnmodifiablePair<K, V>
     public UnmodifiablePair(K key, V value) {
         this.key = key;
         this.value = value;
+    }
+    
+    @Override
+    public K getKey() {
+        return key;
+    }
+    
+    @Override
+    public V getValue() {
+        return value;
     }
     
     @Override

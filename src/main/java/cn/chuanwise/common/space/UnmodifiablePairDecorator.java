@@ -1,7 +1,6 @@
 package cn.chuanwise.common.space;
 
 import cn.chuanwise.common.util.Preconditions;
-import lombok.Data;
 
 /**
  * 不可编辑键值对装饰器
@@ -13,7 +12,6 @@ import lombok.Data;
  *
  * @see cn.chuanwise.common.space.Pair
  */
-@Data
 public class UnmodifiablePairDecorator<K, V>
     implements Pair<K, V> {
     

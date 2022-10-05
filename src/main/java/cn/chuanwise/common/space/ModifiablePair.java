@@ -1,9 +1,5 @@
 package cn.chuanwise.common.space;
 
-import lombok.Data;
-
-import java.util.Map;
-
 /**
  * 可以修改的键值对
  *
@@ -14,7 +10,6 @@ import java.util.Map;
  *
  * @see cn.chuanwise.common.space.Pair
  */
-@Data
 public class ModifiablePair<K, V>
     implements Pair<K, V> {
     
@@ -25,6 +20,16 @@ public class ModifiablePair<K, V>
     public ModifiablePair(K key, V value) {
         this.key = key;
         this.value = value;
+    }
+    
+    @Override
+    public K getKey() {
+        return key;
+    }
+    
+    @Override
+    public V getValue() {
+        return value;
     }
     
     @Override

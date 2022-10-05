@@ -1,25 +1,27 @@
 package cn.chuanwise.common.test;
 
 import cn.chuanwise.common.util.Types;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class TypesTest {
     
-    static class Grandparent {
+    static class StringList
+        extends ArrayList<String> {
     }
     
-    static class Parent extends Grandparent {
-    }
-    
-    static class Son extends Parent {
+    static class MiraiList
+        extends StringList {
     }
     
     @Test
-    void testDistance() {
-        Assertions.assertEquals(0, Types.getTypeDistanceTo(Son.class, Son.class));
-        Assertions.assertEquals(1, Types.getTypeDistanceTo(Son.class, Parent.class));
-        Assertions.assertEquals(1, Types.getTypeDistanceTo(Parent.class, Grandparent.class));
-        Assertions.assertEquals(2, Types.getTypeDistanceTo(Son.class, Grandparent.class));
+    void testTypeParameter() {
+        System.out.println(ArrayList.class.getTypeParameters()[0]);
+    
+        System.out.println(Types.getTypeParameterClass(MiraiList.class, List.class, "E"));
+        System.out.println(Types.getTypeParameterClass(MiraiList.class, Collection.class, "E"));
     }
 }

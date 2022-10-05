@@ -1,7 +1,5 @@
 package cn.chuanwise.common.util;
 
-import lombok.Data;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -16,7 +14,6 @@ import java.util.stream.Collectors;
 public class Types
     extends StaticUtilities {
     
-    @Data
     private static class TypeTree {
         protected final TypeTree parent;
     
@@ -52,6 +49,18 @@ public class Types
             for (Type genericInterface : currentClass.getGenericInterfaces()) {
                 sons.add(new TypeTree(this, genericInterface));
             }
+        }
+    
+        public TypeTree getParent() {
+            return parent;
+        }
+    
+        public Class<?> getCurrentClass() {
+            return currentClass;
+        }
+    
+        public Type getCurrentType() {
+            return currentType;
         }
     
         @Override

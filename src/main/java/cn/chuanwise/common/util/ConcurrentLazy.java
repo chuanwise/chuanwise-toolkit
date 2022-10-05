@@ -1,7 +1,8 @@
 package cn.chuanwise.common.util;
 
-import lombok.EqualsAndHashCode;
-
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
@@ -9,22 +10,21 @@ import java.util.function.Supplier;
  * 
  * @author Chuanwise
  */
-@EqualsAndHashCode
 public final class ConcurrentLazy<T>
     implements Lazy<T> {
     
-    private final Supplier<T> getter;
+    private final Supplier<T> initializer;
     
-    private final Object mutex = new Object();
+    private final Lock lock = new ReentrantLock();
     
     private boolean initialized;
     
     private volatile T value;
     
-    public ConcurrentLazy(Supplier<T> getter) {
-        Preconditions.objectNonNull(getter, "getter");
+    public ConcurrentLazy(Supplier<T> initializer) {
+        Preconditions.objectNonNull(initializer, "initializer");
         
-        this.getter = getter;
+        this.initializer = initializer;
     }
     
     @Override
@@ -32,17 +32,23 @@ public final class ConcurrentLazy<T>
         if (initialized) {
             return value;
         }
-        synchronized (mutex) {
-            value = getter.get();
+        try {
+            lock.lockInterruptibly();
+            
+            if (!initialized) {
+                value = initializer.get();
+            }
+        } catch (InterruptedException e) {
+            throw new CancellationException("lock cancelled caused by interrupting");
+        } finally {
+            lock.unlock();
         }
         return value;
     }
     
     @Override
     public T get(T defaultValue) {
-        return initialized
-            ? value
-            : defaultValue;
+        return initialized ? value : defaultValue;
     }
     
     @Override
@@ -52,6 +58,6 @@ public final class ConcurrentLazy<T>
     
     @Override
     public String toString() {
-        return "Lazy[initialized=" + initialized + ", value=" + value + "]";
+        return "Lazy{initialized=" + initialized + ", value=" + value + "}";
     }
 }

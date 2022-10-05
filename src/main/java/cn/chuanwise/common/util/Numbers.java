@@ -1,5 +1,7 @@
 package cn.chuanwise.common.util;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -202,5 +204,92 @@ public class Numbers
      */
     public static double delta(double left, double right) {
         return Math.abs(left - right);
+    }
+    
+    /**
+     * 判断一个数字是否是整数
+     *
+     * @param number 数字
+     * @return 数字是否是整数
+     */
+    public static boolean isIntegerNumber(Number number) {
+        return number instanceof Byte
+            || number instanceof Short
+            || number instanceof Integer
+            || number instanceof Long
+            || number instanceof BigInteger;
+    }
+    
+    /**
+     * 判断一个数字是否是小数
+     *
+     * @param number 数字
+     * @return 数字是否是小数
+     */
+    public static boolean isFloatingNumber(Number number) {
+        return number instanceof Float
+            || number instanceof Double
+            || number instanceof BigDecimal;
+    }
+    
+    /**
+     * 判断一个数字是否是大数字
+     *
+     * @param number 数字
+     * @return 数字是否是大数字
+     */
+    public static boolean isBigNumber(Number number) {
+        return number instanceof BigDecimal
+            || number instanceof BigInteger;
+    }
+    
+    /**
+     * 比较两个数字的大小
+     *
+     * @param left
+     * @param right
+     * @return
+     */
+    @SuppressWarnings("all")
+    public static int compare(Number left, Number right) {
+        Preconditions.objectNonNull(left, "left");
+        Preconditions.objectNonNull(right, "right");
+    
+        final boolean leftIsBigNumber = isBigNumber(left);
+        final boolean leftIsInteger = isIntegerNumber(left);
+        final boolean leftIsBigInteger = left instanceof BigInteger;
+        final boolean leftIsBigDecimal = left instanceof BigDecimal;
+    
+        final boolean rightIsByte = right instanceof Byte;
+        final boolean rightIsShort = right instanceof Short;
+        final boolean rightIsInteger = right instanceof Integer;
+        final boolean rightIsLong = right instanceof Long;
+        final boolean rightIsFloat = right instanceof Float;
+        final boolean rightIsDouble = right instanceof Double;
+        final boolean rightIsBigInteger = right instanceof BigInteger;
+        final boolean rightIsBigDecimal = right instanceof BigDecimal;
+        
+        if (leftIsInteger) {
+            
+            if (!leftIsBigDecimal) {
+                return Long.compare(left.longValue(), right.longValue());
+            }
+            
+            if (rightIsFloat || rightIsDouble) {
+                return Double.compare(left.doubleValue(), right.doubleValue());
+            }
+            
+            if (rightIsBigInteger) {
+                return BigInteger.valueOf(left.longValue()).compareTo((BigInteger) right);
+            }
+            if (rightIsBigDecimal) {
+                return BigDecimal.valueOf(left.doubleValue()).compareTo((BigDecimal) right);
+            }
+    
+            return Double.compare(left.doubleValue(), right.doubleValue());
+        }
+    
+        // TODO: 2022/9/21 finish it
+        return 0;
     }
 }

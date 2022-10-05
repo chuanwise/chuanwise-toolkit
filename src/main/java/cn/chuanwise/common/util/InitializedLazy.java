@@ -1,15 +1,11 @@
 package cn.chuanwise.common.util;
 
-import lombok.EqualsAndHashCode;
-
-import java.util.function.Supplier;
 
 /**
  * 已经加载过的懒加载值，只是一个装饰器。
  * 
  * @author Chuanwise
  */
-@EqualsAndHashCode
 public final class InitializedLazy<T>
     implements Lazy<T> {
     

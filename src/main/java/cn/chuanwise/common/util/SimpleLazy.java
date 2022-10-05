@@ -1,7 +1,5 @@
 package cn.chuanwise.common.util;
 
-import lombok.EqualsAndHashCode;
-
 import java.util.function.Supplier;
 
 /**
@@ -9,7 +7,6 @@ import java.util.function.Supplier;
  * 
  * @author Chuanwise
  */
-@EqualsAndHashCode
 public final class SimpleLazy<T> 
     implements Lazy<T> {
     

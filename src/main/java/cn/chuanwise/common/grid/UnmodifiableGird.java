@@ -1,8 +1,6 @@
 package cn.chuanwise.common.grid;
 
 import cn.chuanwise.common.util.Preconditions;
-import lombok.Data;
-import lombok.NonNull;
 
 /**
  * 不可编辑的网格
@@ -10,11 +8,9 @@ import lombok.NonNull;
  * @author Chuanwise
  * @param <T> 网格元素类型
  */
-@Data
 public class UnmodifiableGird<T>
     implements Grid<T> {
     
-    @NonNull
     protected final Grid<T> grid;
     
     public UnmodifiableGird(Grid<T> grid) {

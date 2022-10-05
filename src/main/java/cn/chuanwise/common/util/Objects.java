@@ -95,7 +95,7 @@ public class Objects
     /**
      * 在某个对象上同步
      *
-     * @param object     同步对象
+     * @param object  同步对象
      * @param timeout 超时时间戳
      * @return 是否有其他线程在该对象上 notify
      * @throws InterruptedException 中断异常
@@ -123,7 +123,7 @@ public class Objects
      * 在某个对象上同步
      *
      * @param object   同步对象
-     * @param timeout 超时时长
+     * @param timeout  超时时长
      * @param timeUnit 时间单位
      * @return 是否有其他线程在该对象上 notify
      * @throws InterruptedException 中断异常
@@ -158,7 +158,7 @@ public class Objects
      * 不可打断地在某个对象上同步
      *
      * @param object   同步对象
-     * @param timeout 超时时长
+     * @param timeout  超时时长
      * @param timeUnit 时间单位
      * @return 是否有其他线程在该对象上 notify
      */
@@ -173,7 +173,7 @@ public class Objects
     /**
      * 不可打断地在某个对象上同步
      *
-     * @param object     同步对象
+     * @param object  同步对象
      * @param timeout 超时时间戳
      * @return 是否有其他线程在该对象上 notify
      */
@@ -199,6 +199,27 @@ public class Objects
                 }
             } catch (InterruptedException ignored) {
             }
+        }
+    }
+    
+    /**
+     * 安全地将一个对象转化为某种类型的引用
+     *
+     * @param object      对象
+     * @param targetClass 目标类型
+     * @param <T>         目标类型
+     * @return 转换成功后的对象，或 null
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T safeCast(Object object, Class<T> targetClass) {
+        Preconditions.objectNonNull(targetClass, "target class");
+        
+        if (Objects.isNull(object)) {
+            return null;
+        } else if (targetClass.isAssignableFrom(object.getClass())) {
+            return (T) object;
+        } else {
+            return null;
         }
     }
 }
